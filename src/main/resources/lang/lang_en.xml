@@ -2040,14 +2040,11 @@
 
     <string name="message"><![CDATA[<h1>Digital</h1>
         <p>A simple simulator for digital circuits.</p>
-        <p>Written by H. Neemann in 2016-2023.</p>
-        <p>The icons are taken from the <a href="http://tango.freedesktop.org">Tango Desktop Project</a>.</p>
+        <p>Written by H. Neemann in 2016-2025. Updated by AlexF1789 in 2025 for the user interface</p>
+        <p>The icons are taken from the <a href="https://github.com/PapirusDevelopmentTeam/papirus-icon-theme">Papirus Icon Theme</a>.</p>
         <p>Visit the project at <a href="https://github.com/hneemann/[[name]]">GitHub</a>.
         At GitHub you can also <a href="https://github.com/hneemann/[[name]]/releases/latest">download</a>
-        the latest release.</p>
-        <p>There you also can file an <a href="https://github.com/hneemann/[[name]]/issues/new?body=version:%20[[version]]&labels=bug">issue</a>
-        or suggest
-        an <a href="https://github.com/hneemann/[[name]]/issues/new?labels=enhancement">enhancement</a>.</p>]]>
+        the latest release. Check the fork <a href="https://github.com/AlexF1789/[[name]]/releases/latest">GitHub</a> page</p>]]>
     </string>
     <string name="msg_N_nodes">{0} nodes</string>
     <string name="msg_analyseErr">Error analysing the circuit</string>

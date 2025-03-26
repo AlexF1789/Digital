@@ -1,3 +1,10 @@
+# In this fork
+The main scope of this fork is to provide the same experience which is present in Digital but granting a modern user interface by applying some visual improvements to the program; more specifically two new look and feel have been introduced to the Java Swing interface, they're part of the FlatLaf project. There's a modern icon set too which is inspired by the Papirus Icon Theme.
+
+You can build the code by yourself or download a release in the release section.
+
+Everything from now on is taken from the original description.
+
 [![Download](distribution/Download.svg)](https://github.com/hneemann/Digital/releases/latest/download/Digital.zip)
 
 ![Build Status](https://travis-ci.com/hneemann/Digital.svg?branch=master)
