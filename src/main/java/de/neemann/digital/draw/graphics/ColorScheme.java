@@ -5,8 +5,11 @@
  */
 package de.neemann.digital.draw.graphics;
 
+//import com.formdev.flatlaf.FlatDarkLaf;
+//import com.formdev.flatlaf.FlatLightLaf;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.Key;
+import de.neemann.digital.gui.Main;
 import de.neemann.digital.gui.Settings;
 
 import java.awt.*;
@@ -38,7 +41,7 @@ public final class ColorScheme {
             .build();
 
     private static final ColorScheme DARK_SCHEME = new Builder(DEFAULT_SCHEME)
-            .set(ColorKey.BACKGROUND, Color.BLACK)
+            .set(ColorKey.BACKGROUND, new Color(69, 69, 69))
             .set(ColorKey.MAIN, Color.GRAY)
             .set(ColorKey.GRID, new Color(50, 50, 50))
             .set(ColorKey.DISABLED, new Color(40, 40, 40))
@@ -54,11 +57,11 @@ public final class ColorScheme {
 
     /**
      * Needs to be called if the settings are modified
-     *
+     * @param gui identifies the GUI instance
      * @param modified the modified settings
      */
-    public static void updateCustomColorScheme(ElementAttributes modified) {
-        ColorSchemes.CUSTOM.set(modified.get(CUSTOM_COLOR_SCHEME));
+    public static void updateCustomColorScheme(ElementAttributes modified, Main gui) {
+        gui.setTheme(ColorSchemes.CUSTOM.set(modified.get(CUSTOM_COLOR_SCHEME)));
     }
 
     /**
@@ -113,13 +116,27 @@ public final class ColorScheme {
             System.out.println(".build();");
         }
 
-        private void set(ColorScheme newScheme) {
+        private int set(ColorScheme newScheme) {
             if (scheme != null && !scheme.equals(newScheme)) {
                 scheme = newScheme;
-                if (Settings.getInstance().get(COLOR_SCHEME).equals(CUSTOM))
+
+                if (ColorScheme.isLightSettings())
                     instance = newScheme;
             }
+
+            if (Settings.getInstance().get(COLOR_SCHEME).equals(DEFAULT))
+                return 0; // in reality it's the opposite so here we've selected the dark theme
+            else
+                return 1; // in other cases we'll likely want the light theme
         }
+    }
+
+    /**
+     * Returns true if the settings regarding the color scheme for the theme are set to DEFAULT
+     * @return a boolean value which is true if the settings contain light theme preference
+     */
+    public static boolean isLightSettings() {
+        return Settings.getInstance().get(COLOR_SCHEME).equals(ColorSchemes.DEFAULT);
     }
 
     /**

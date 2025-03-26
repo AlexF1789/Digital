@@ -5,6 +5,8 @@
  */
 package de.neemann.digital.gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import de.neemann.digital.FileLocator;
 import de.neemann.digital.analyse.AnalyseException;
 import de.neemann.digital.analyse.ModelAnalyser;
@@ -156,6 +158,9 @@ public final class Main extends JFrame implements ClosingWindowListener.ConfirmS
     private JComponent componentOnPane;
     private LibraryTreeModel treeModel;
 
+    private JMenuBar menuBar;
+    private JToolBar toolBar;
+
     /**
      * Creates a new instance
      *
@@ -217,8 +222,8 @@ public final class Main extends JFrame implements ClosingWindowListener.ConfirmS
 
         setupStates();
 
-        JMenuBar menuBar = new JMenuBar();
-        JToolBar toolBar = new JToolBar();
+        this.menuBar = new JMenuBar();
+        this.toolBar = new JToolBar();
 
         save = createFileMenu(menuBar, toolBar, builder.allowAllFileActions);
         toolBar.addSeparator();
@@ -843,7 +848,7 @@ public final class Main extends JFrame implements ClosingWindowListener.ConfirmS
                                 .setDialogTitle(Lang.get("menu_editSettings"))
                                 .showDialog();
                 if (modified != null) {
-                    ColorScheme.updateCustomColorScheme(modified);
+                    ColorScheme.updateCustomColorScheme(modified, Main.this);
 
                     if (Settings.getInstance().requiresRestart(modified)) {
                         Lang.setLanguage(modified.get(Keys.SETTINGS_LANGUAGE));
@@ -2151,6 +2156,40 @@ public final class Main extends JFrame implements ClosingWindowListener.ConfirmS
     //**********************
 
     /**
+     * Sets a theme to the interface
+     * @param schema identifies the schema code number
+     */
+    public void setTheme(int schema) {
+        if (schema == 0) {
+            // we're setting the dark theme
+            try {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            } catch(Exception error) {
+                error.printStackTrace();
+            }
+        } else {
+            // we're setting the light theme
+            try {
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            } catch(Exception error) {
+                error.printStackTrace();
+            }
+        }
+
+        // update the icons
+        JOptionPane.showMessageDialog(null, "To make the icon change effective you have to restart Digital", "Info", JOptionPane.INFORMATION_MESSAGE);
+
+
+        // update all the opened windows look and feel
+        for (Window window : Window.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(window);
+            window.invalidate();
+            window.validate();
+            window.repaint();
+        }
+    }
+
+    /**
      * Starts the main app
      *
      * @param args the arguments
@@ -2168,8 +2207,14 @@ public final class Main extends JFrame implements ClosingWindowListener.ConfirmS
         Therefore also on MosOS the MetalLookAndFeel is used.
          */
         try { // enforce MetalLookAndFeel
-            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException e) {
+            if (ColorScheme.isLightSettings()) {
+                FlatLightLaf.setup();
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            } else {
+                FlatDarkLaf.setup();
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ToolTipManager.sharedInstance().setDismissDelay(10000);

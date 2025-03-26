@@ -5,6 +5,7 @@
  */
 package de.neemann.gui;
 
+import de.neemann.digital.draw.graphics.ColorScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +75,7 @@ public final class IconCreator {
     }
 
     private static BufferedImage getImageOrNull(String name) throws IOException {
-        URL systemResource = ClassLoader.getSystemResource("icons/" + name);
+        URL systemResource = ClassLoader.getSystemResource((ColorScheme.isLightSettings() ? "light" : "dark")+"_icons/" + name);
         if (systemResource == null) {
             return null;
         }
